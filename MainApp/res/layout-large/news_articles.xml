@@ -20,20 +20,20 @@ limitations under the License.
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment android:name="com.example.android.fragments.HeadlinesFragment"
+    <fragment android:name="com.example.diego.activitytracker.HeadlinesFragment"
               android:id="@+id/headlines_fragment"
               android:layout_weight="1"
               android:layout_width="0dp"
               android:layout_height="match_parent" />
 
-    <fragment android:name="com.example.android.fragments.ArticleFragment"
+    <fragment android:name="com.example.diego.activitytracker.ArticleFragment"
               android:id="@+id/article_fragment"
               android:layout_weight="2"
               android:layout_width="0dp"
               android:layout_height="match_parent" />
 
     <fragment
-        android:name="com.example.android.fragments.AddArticleFragment"
+        android:name="com.example.diego.activitytracker.AddArticleFragment"
         android:id="@+id/addNew_fragment"
         android:layout_weight="1"
         android:layout_width="0dp"

@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.tgk.integrationwithfragment.R;
 
+import com.example.tgk.integrationwithfragment.R;
 
 /**
  * Created by HWardak on 16-04-20.

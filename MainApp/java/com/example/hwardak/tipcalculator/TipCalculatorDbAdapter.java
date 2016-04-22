@@ -2,6 +2,10 @@ package com.example.hwardak.tipcalculator;
 /* Copyright © 2011-2013 mysamplecode.com, All rights reserved.
   This source code is provided to students of CST2335 for educational purposes only.
  */
+
+/* IMPORTANT NOTE: Code in this file was based on the lecture
+ * materials provided by Todd Kelly (2016).
+ */
         import android.content.ContentValues;
         import android.content.Context;
         import android.database.Cursor;
@@ -9,8 +13,6 @@ package com.example.hwardak.tipcalculator;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
         import android.util.Log;
-        import com.example.tgk.integrationwithfragment.R;
-
 
 public class TipCalculatorDbAdapter {
 
@@ -93,7 +95,7 @@ public class TipCalculatorDbAdapter {
         return mDb.insert(SQLITE_TABLE, null, initialValues);
     }
 
-    public boolean deleteAllCountries() {
+    public boolean deleteAllRecords() {
 
         int doneDelete = 0;
         doneDelete = mDb.delete(SQLITE_TABLE, null , null);
@@ -101,21 +103,42 @@ public class TipCalculatorDbAdapter {
         return doneDelete > 0;
 
     }
+    //TODO: EDIT THIS
+    public boolean deleteCertainRecord(String inputText) throws SQLException {
+//        Log.w(TAG, inputText);
+//        Cursor mCursor = null;
+//        if (inputText == null  ||  inputText.length () == 0)  {
+//            mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
+//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
+//                    null, null, null, null, null);
+//
+//        }
+//        else {
+//            mCursor = mDb.delete(true, SQLITE_TABLE, new String[] {KEY_ROWID,
+//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
+//                    KEY_ROWID + " like '%" + inputText + "%'", null,
+//                    null, null, null, null);
 
-    public Cursor fetchCountriesByName(String inputText) throws SQLException {
+        return mDb.delete(SQLITE_TABLE, KEY_ROWID + " like '%" + inputText + "%'", null ) > 0;
+
+        //}
+
+    }
+
+    public Cursor fetchRecordsByName(String inputText) throws SQLException {
         Log.w(TAG, inputText);
 
         Cursor mCursor = null;
         if (inputText == null  ||  inputText.length () == 0)  {
-            mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_NAME,
+            mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,KEY_NAME,
                             KEY_TIPP, KEY_TIPD, KEY_TOTAL, KEY_NOTE},
                     null, null, null, null, null);
 
         }
         else {
-            mCursor = mDb.query(true, SQLITE_TABLE, new String[] {KEY_NAME,
+            mCursor = mDb.query(true, SQLITE_TABLE, new String[] {KEY_ROWID,KEY_NAME,
                             KEY_TIPP, KEY_TIPD, KEY_TOTAL, KEY_NOTE},
-                    KEY_TIPD + " like '%" + inputText + "%'", null,
+                    KEY_ROWID + " like '%" + inputText + "%'", null,
                     null, null, null, null);
         }
         if (mCursor != null) {
@@ -125,9 +148,9 @@ public class TipCalculatorDbAdapter {
 
     }
 
-    public Cursor fetchAllCountries() {
+    public Cursor fetchAllRecords() {
 
-        Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_NAME,
+        Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID, KEY_NAME,
                         KEY_TIPP, KEY_TIPD, KEY_TOTAL, KEY_NOTE},
                 null, null, null, null, null);
 
@@ -137,16 +160,6 @@ public class TipCalculatorDbAdapter {
         return mCursor;
     }
 
-    public void insertSomeCountries() {
 
-//        createCountry("AFG","Afghanistan","Asia","Southern and Central Asia");
-//        createCountry("ALB","Albania","Europe","Southern Europe");
-//        createCountry("DZA","Algeria","Africa","Northern Africa");
-//        createCountry("ASM","American Samoa","Oceania","Polynesia");
-//        createCountry("AND","Andorra","Europe","Southern Europe");
-//        createCountry("AGO","Angola","Africa","Central Africa");
-//        createCountry("AIA","Anguilla","North America","Caribbean");
-
-    }
 
 }

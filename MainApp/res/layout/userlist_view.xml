@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    * Course Name:CST2335_010 Graphical Interface Programming
+    Student Name: Xuan Li
+    Student Number:040811628
+    *
+    -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_margin="15dp"
+    android:weightSum="1">
+
+    <!--filter-->
+    <EditText
+        android:id="@+id/myFilter"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Type here to filter&#8230;">
+        <requestFocus />
+    </EditText>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:textSize="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

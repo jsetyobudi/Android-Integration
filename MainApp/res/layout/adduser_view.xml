@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    * Course Name:CST2335_010 Graphical Interface Programming
+    Student Name: Xuan Li
+    Student Number:040811628
+    *
+    -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="first name"
+        android:singleLine="true"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/last_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="last name"
+        android:singleLine="true"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/phone"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="phone"
+        android:singleLine="true"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/email"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="email"
+        android:singleLine="true"
+        android:textSize="25dp" />
+
+
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="note"
+        android:singleLine="true"
+        android:textSize="25dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_add_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADD TO CONTACT" />
+
+        <Button
+            android:id="@+id/btn_view_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VIEW ALL CONTACT" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -27,8 +27,9 @@
                 android:gravity="center" />
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="25%"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -36,38 +37,41 @@
                 android:onClick="onClickQuickTip" />
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="20%"
                 android:paddingBottom="10dp"
                 android:id="@+id/quickTip20"
                 android:onClick="onClickQuickTip" />
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="15%"
                 android:paddingBottom="10dp"
                 android:id="@+id/quickTip15"
                 android:onClick="onClickQuickTip" />
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="10%"
                 android:paddingBottom="10dp"
                 android:id="@+id/quickTip10"
                 android:onClick="onClickQuickTip" />
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text=" 5%"
                 android:paddingBottom="10dp"
                 android:id="@+id/quickTip5"
                 android:onClick="onClickQuickTip" />
         </LinearLayout>
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
@@ -112,54 +116,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:background="#dee3f2"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent">
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="Info"
-                android:textSize="25dp"
-                android:layout_weight="1"
-                android:gravity="center"/>
-
-            <LinearLayout
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:layout_width="match_parent"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/name"
-                    android:layout_marginBottom="20dp"
-                    android:hint="Enter store name...."
-                    android:background="#c9d2ed"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.51"
-                    android:maxLines="1"
-                    android:maxLength="50" />
-
-                <EditText
-                    android:id="@+id/note"
-                    android:hint="Enter note here...."
-                    android:background="#bbc8ef"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    android:maxLines="5"
-                    android:maxLength="2000"/>
-
-            </LinearLayout>
 
 
 
-        </LinearLayout>
+
+
+
 
     </LinearLayout>
 </LinearLayout>

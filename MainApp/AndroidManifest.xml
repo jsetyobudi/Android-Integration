@@ -16,14 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity
-             android:name="com.example.tgk.integrationwithfragment.MainActivity"/>
+
          <activity
-             android:name="com.example.tgk.integrationwithfragment.MainActivity3"/>-->
+             android:name="com.example.xuan.contactlist.MainActivity"/>
         <activity
-            android:name="com.example.tgk.integrationwithfragment.CarbonFootprintMainActivity"/>
+            android:name="com.example.johan.carbonfootprint.CarbonFootprintMainActivity"/>
      <activity
-            android:name="com.example.android.fragments.MainActivity"/>
+            android:name="com.example.diego.activitytracker.MainActivity"/>
 
     </application>
 

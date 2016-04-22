@@ -14,13 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-import com.example.tgk.integrationwithfragment.CarbonFootprintMainActivity;
+import com.example.johan.carbonfootprint.CarbonFootprintViewAllRecords;
+import com.example.johan.carbonfootprint.CarbonFootprintViewDetailsFragment;
 import com.example.tgk.integrationwithfragment.R;
 
 import java.text.DecimalFormat;
 
-public class MainActivity extends ActionBarActivity implements MainFragment.onUpdate {
+public class MainActivity extends ActionBarActivity implements MainFragment.onUpdate, ViewRecordFragment.OnTiptSelectedListener, ViewDetailsRecordFragment.OnTipsDetailListener {
     DecimalFormat df = new DecimalFormat("#.00");
 
     TipCalculatorDbAdapter dbAdapter = new TipCalculatorDbAdapter(MainActivity.this);
@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    ViewRecordFragment viewRecordFragment;
     HelpFragment helpFragment;
     StoreRecordFragment storeRecordFragment;
     MainFragment mainFragment = new MainFragment();
@@ -65,15 +66,31 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
         totalField = (EditText) findViewById(R.id.totalField);
         name = (EditText) findViewById(R.id.name);
         note = (EditText) findViewById(R.id.note);
+
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
 
 
          addRecordButton = (Button) findViewById(R.id.addRecordButton);
          viewRecordButton = (Button) findViewById(R.id.viewRecordButton);
          helpButton = (Button) findViewById(R.id.helpButton);
+
+        viewRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewRecordButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewRecordFragment firstFragment = new ViewRecordFragment();
+                        setContentView(R.layout.activity_main);
+                        firstFragment.setArguments(getIntent().getExtras());
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.mainFrameLayout, firstFragment).commit();
+                    }
+                });
+            }
+        });
 
         //mainFragment = new MainFragment();
 
@@ -84,14 +101,72 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
 
 
     }
+    /**
+     * creating menu
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     * changing activities on the toolbar
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        switch (id){
+            case R.id.action_one:
+               // go(com.example.hwardak.tipcalculator.MainActivity.class);
+                break;
+            case R.id.action_two:
+                go(com.example.diego.activitytracker.MainActivity.class);
+                break;
+            case R.id.action_three:
+                go(com.example.johan.carbonfootprint.CarbonFootprintMainActivity.class);
+                break;
+            case R.id.action_four:
+                 go(com.example.xuan.contactlist.MainActivity.class);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * change activities
+     * @param c
+     */
+    private void go(Class c){
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
+    }
 
     public void onClickQuickTip(View view) {
+        EditText customTipField = (EditText) findViewById(R.id.customTipField);
+
+
         Button quickTipButton = (Button) view;
 
         tipNumber = Double.parseDouble(quickTipButton.getText().toString().substring(0, 2));
 
         tipPercent = tipNumber/100;
 
+        customTipField.setText(tipNumber+"%");
 
         calcTotal();
 
@@ -196,62 +271,6 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
 
     }
 
-    /**
-     * creating menu
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /**
-     * changing activities on the toolbar
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        switch (id){
-            case R.id.action_one:
-                //go(com.example.hwardak.tipcalculator.MainActivity.class);
-                break;
-            case R.id.action_two:
-                  go(com.example.android.fragments.MainActivity.class);
-                break;
-            case R.id.action_three:
-                go(CarbonFootprintMainActivity.class);
-                break;
-            case R.id.action_four:
-                //  go(MainActivity4.class);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * change activities
-     * @param c
-     */
-    private void go(Class c){
-        Intent intent = new Intent(this, c);
-        startActivity(intent);
-    }
-
-
 
     @Override
     public void updateDisplay(Double d1, Double d2) {
@@ -260,11 +279,85 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
 
     public void onAddRecordButtonClickToDatabase(View view) {
 
-//        name2 = name.getText().toString();
-//        note2 = note.getText().toString();
-
         dbAdapter.open();
-        dbAdapter.createCountry("Sample Name", tipPercent.toString(), tipValue.toString(), totalValue.toString(), "Sample Note");
+        dbAdapter.createCountry(name.getText().toString(), tipPercent.toString(), tipValue.toString(), totalValue.toString(), note.getText().toString());
         dbAdapter.close();
+    }
+
+    public void onViewRecordButtonClick(View view) {
+
+       // Button button = (Button) view;
+//        button.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                ViewRecordFragment firstFragment = new ViewRecordFragment();
+////                setContentView(R.layout.activity_main);
+////                firstFragment.setArguments(getIntent().getExtras());
+////                getSupportFragmentManager().beginTransaction()
+////                        .add(R.id.mainFrameLayout, firstFragment).commit();
+////            }
+////        });
+////        if(button.getText().toString().equals("View Records")) {
+//
+//            button.setText(" << Back");
+//
+//            viewRecordFragment = new ViewRecordFragment();
+//
+//            fragmentManager = getFragmentManager();
+//            fragmentTransaction = fragmentManager.beginTransaction();
+//
+//            fragmentTransaction.remove(mainFragment);
+//
+//            fragmentTransaction.add(R.id.mainFrameLayout, viewRecordFragment).commit();
+//            addRecordButton.setVisibility(View.INVISIBLE);
+//            helpButton.setVisibility(View.INVISIBLE);
+//    } else {
+//        fragmentManager = getFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.remove(viewRecordFragment);
+//        fragmentTransaction.add(R.id.mainFrameLayout, mainFragment).commit();
+//
+//
+//        button.setText("View Records");
+//        helpButton.setVisibility(View.VISIBLE);
+//        addRecordButton.setVisibility(View.VISIBLE);
+//
+//
+//    }
+}
+
+    @Override
+    public void onTipSelected(int position, long id) {
+        ViewDetailsRecordFragment newFragment = new ViewDetailsRecordFragment();
+        Bundle args = new Bundle();
+        args.putInt(ViewDetailsRecordFragment.ARG_POSITION, position);
+        newFragment.setArguments(args);
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.mainFrameLayout, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
+    @Override
+    public void onTipDeleted() {
+
+        //go(CarbonFootprintMainActivity.class);
+        ViewRecordFragment newFragment = new ViewRecordFragment();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainFrameLayout, newFragment);
+
+        transaction.addToBackStack(null);
+        //transaction.disallowAddToBackStack();
+        // Commit the transaction
+        transaction.commit();
+
     }
 }
