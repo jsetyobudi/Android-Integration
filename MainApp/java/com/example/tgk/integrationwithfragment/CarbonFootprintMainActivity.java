@@ -26,11 +26,15 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 
 /**
+ * Main activity for the Carbon Footprint Class
  * Created by Johan on 16-Apr-2016.
  */
 public class CarbonFootprintMainActivity extends AppCompatActivity
         implements CarbonFootprintViewAllRecords.OnFootprintSelectedListener, CarbonFootprintViewDetailsFragment.OnFootprintListener{
 
+    /**
+     * vehicle spinner
+     */
     private Spinner vehicleSpinner;
     private Spinner distanceSpinner;
     private Spinner categorySpinner;
@@ -57,6 +61,10 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     private Button helpButton;
     static final int DATE_DIALOG_ID = 0;
 
+    /**
+     * since i did not make a fragment for the add, i am forced to use this to ensure
+     * the back button will go back to the main activity
+     */
     @Override
     public void onBackPressed()
     {
@@ -65,6 +73,13 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         finish();
 
     }
+
+    /**
+     * onCreate, my mistake...i did not make the add a fragment, so everything is in here. it is very
+     * messy and i realized too late that i had to change it. so all the action listeners, spinner
+     * listeners, button listeners, everything is in this method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,6 +213,16 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     }
 
 
+    /**
+     * calculating carbon footprint, and returning the number in tonnes
+     * @param category
+     * @param vehicle
+     * @param distance
+     * @param distanceType
+     * @param date
+     * @param note
+     * @return
+     */
     private double calculateFootprint(String category, String vehicle, String distance, String distanceType, String date, String note) {
         Double distanceKm;
         Double vehicleFootprintPerThousandKmPerTonne = 0.0;
@@ -244,6 +269,9 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         return total;
     }
 
+    /**
+     * updating date
+     */
     private void updateDisplay() {
         this.tripDateDisplay.setText(
                 new StringBuilder()
@@ -260,6 +288,12 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
                     updateDisplay();
                 }
             };
+
+    /**
+     * getting date from user
+     * @param id
+     * @return
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -270,6 +304,11 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     }
 
 
+    /**
+     * creating menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -277,6 +316,11 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * changing activities on the toolbar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -305,12 +349,22 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * change activities
+     * @param c
+     */
     private void go(Class c){
         Intent intent = new Intent(this, c);
         startActivity(intent);
     }
 
 
+    /**
+     * changing to detail view based on selection
+     * @param position
+     * @param id
+     */
     @Override
     public void onFootprintSelected(int position, long id) {// The user selected the headline of an article from the HeadlinesFragment
 
@@ -347,6 +401,9 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
 }
 
 
+    /**
+     * Go back to the main activity
+     */
     @Override
     public void onFootprintDeleted() {
       go(CarbonFootprintMainActivity.class);

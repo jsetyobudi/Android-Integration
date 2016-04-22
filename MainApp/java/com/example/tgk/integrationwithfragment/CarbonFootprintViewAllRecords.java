@@ -19,6 +19,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 /**
+ * view all records class
  * Created by Johan on 19-Apr-2016.
  */
 public class CarbonFootprintViewAllRecords extends ListFragment {
@@ -27,6 +28,9 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     private SimpleCursorAdapter dataAdapter;
     OnFootprintSelectedListener mCallback;
 
+    /**
+     * interface that has to be implemented
+     */
     // The container Activity must implement this interface so the frag can deliver messages
     public interface OnFootprintSelectedListener {
         /** Called by HeadlinesFragment when a list item is selected */
@@ -34,7 +38,10 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     }
 
 
-
+    /**
+     * on create
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,8 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         displayListView();
 
     }
+
+
     /*
      * Sets up a ListView with a SimpleCursorAdapter and a Cursor with all the rows
      * from the database table.  Also sets up the handler for when an item is selected.
@@ -126,6 +135,14 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
 
 
     }
+
+    /**
+     * on item click, get more detail
+     * @param listView
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onListItemClick(ListView listView, View view,
                                 int position, long id) {
@@ -136,24 +153,32 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         String countryCode =
                 cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
 
-        Toast.makeText(getActivity(),
-                countryCode, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),
+//                countryCode, Toast.LENGTH_SHORT).show();
 
         mCallback.onFootprintSelected(Integer.parseInt(countryCode), id);
     }
 
 
-
+    /**
+     * on start
+     */
     @Override
     public void onStart() {
         super.onStart();
 
 //
     }// When in two-pane layout, set the listview to highlight the selected list item
+
+
     //        // (We do this during onStart because at the point the listview is available.)
 //        if (getFragmentManager().findFragmentById(R.id.footprintDetail_fragment) != null) {
 //            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 //        }
+    /**
+     * attaching interface
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

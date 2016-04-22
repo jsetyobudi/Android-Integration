@@ -1,7 +1,6 @@
 package com.example.tgk.integrationwithfragment;
 
 /**
- * Created by Johan on 19-Apr-2016.
  */
 import android.app.Activity;
 import android.content.Intent;
@@ -25,6 +24,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * detail fragment for carbon footprint
+ * @author Johan Setyobudi
+ * Created by Johan on 19-Apr-2016.
+ */
 public class CarbonFootprintViewDetailsFragment extends Fragment implements View.OnClickListener {
     final static String ARG_POSITION = "position";
     int mCurrentPosition = -1;
@@ -33,10 +37,22 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
     Button delete;
     View view;
     OnFootprintListener mCallback;
+
+    /**
+     * interface that needs to be implemented
+     */
     public interface OnFootprintListener {
         public void onFootprintDeleted();
 
     }
+
+    /**
+     * on create
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,6 +71,9 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         return view;
     }
 
+    /**
+     * on start
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -72,6 +91,11 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         }
     }
 
+    /**
+     * getting data from database, and displaying detailed info to user
+     * @param position
+     * @param id
+     */
     public void updateFootprintView(int position, long id) {
         dbHelper = new CarbonFootprintDBAdapter(getActivity());
         dbHelper.open();
@@ -113,6 +137,10 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
 
     }
 
+    /**
+     * save current selection if we need to recreate
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -121,6 +149,10 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         outState.putInt(ARG_POSITION, mCurrentPosition);
     }
 
+    /**
+     * on click handler for delete button
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         dbHelper = new CarbonFootprintDBAdapter(getActivity());
@@ -129,6 +161,11 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         mCallback.onFootprintDeleted();
         //go(CarbonFootprintMainActivity.class);
     }
+
+    /**
+     * attaching the interface
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -143,8 +180,5 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         }
     }
 
-    private void go(Class c){
-        Intent intent = new Intent(getActivity(), c);
-        startActivity(intent);
-    }
+
 }

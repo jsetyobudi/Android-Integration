@@ -12,6 +12,7 @@ import android.util.Log;
 import java.sql.Date;
 
 /**
+ * database class for carbon footprint
  * Created by Johan on 16-Apr-2016.
  */
 public class CarbonFootprintDBAdapter {
@@ -44,6 +45,9 @@ public class CarbonFootprintDBAdapter {
                     KEY_NOTE + "," +
                     KEY_FOOTPRINT +");";
 
+    /**
+     * database helper class
+     */
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {
@@ -51,6 +55,10 @@ public class CarbonFootprintDBAdapter {
         }
 
 
+        /**
+         * on create
+         * @param db
+         */
         @Override
         public void onCreate(SQLiteDatabase db) {
             Log.w(TAG, DATABASE_CREATE);
@@ -58,6 +66,12 @@ public class CarbonFootprintDBAdapter {
         }
 
 
+        /**
+         * if we need to upgrade, we call this class
+         * @param db
+         * @param oldVersion
+         * @param newVersion
+         */
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
@@ -67,22 +81,44 @@ public class CarbonFootprintDBAdapter {
         }
     }
 
+    /**
+     * constructor
+     * @param ctx
+     */
     public CarbonFootprintDBAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
+    /**
+     * open the database
+     * @return
+     * @throws SQLException
+     */
     public CarbonFootprintDBAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;
     }
 
+    /**
+     * close the database
+     */
     public void close() {
         if (mDbHelper != null) {
             mDbHelper.close();
         }
     }
 
+    /**
+     * create a carbon footprint record and store in database
+     * @param category
+     * @param vehicle
+     * @param distance
+     * @param date
+     * @param note
+     * @param footprint
+     * @return
+     */
     public long createFootprint(String category, String vehicle,
                               String distance, String date, String note, String footprint) {
 
@@ -98,6 +134,10 @@ public class CarbonFootprintDBAdapter {
         return mDb.insert(SQLITE_TABLE, null, initialValues);
     }
 
+    /**
+     * delete all records
+     * @return
+     */
     public boolean deleteAllFootprint() {
         int doneDelete = 0;
         doneDelete = mDb.delete(SQLITE_TABLE, null , null);
@@ -106,6 +146,12 @@ public class CarbonFootprintDBAdapter {
 
     }
 
+    /**
+     * delete one specific record
+     * @param inputText
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteCertainFootprint(String inputText) throws SQLException {
 //        Log.w(TAG, inputText);
 //        Cursor mCursor = null;
@@ -127,6 +173,12 @@ public class CarbonFootprintDBAdapter {
 
     }
 
+    /**
+     * get specific row
+     * @param inputText
+     * @return
+     * @throws SQLException
+     */
     public Cursor fetchFootprintByRowID(String inputText) throws SQLException {
         Log.w(TAG, inputText);
         Cursor mCursor = null;
@@ -150,6 +202,10 @@ public class CarbonFootprintDBAdapter {
 
     }
 
+    /**
+     * get all rows
+     * @return
+     */
     public Cursor fetchAllFootprint() {
 
         Cursor mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,

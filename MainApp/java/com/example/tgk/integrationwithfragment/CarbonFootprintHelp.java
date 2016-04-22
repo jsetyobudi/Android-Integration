@@ -13,11 +13,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
+ * CarbonFootprintHelp Class, creates the help text
  * Created by Johan on 21-Apr-2016.
  */
 public class CarbonFootprintHelp extends Fragment {
-
+    /**
+     *
+     */
     View view;
+
+    /**
+     * onCreateView method, sets the help text
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +47,9 @@ public class CarbonFootprintHelp extends Fragment {
         return view;
     }
 
+    /**
+     * onStart
+     */
     @Override
     public void onStart() {
         super.onStart();
