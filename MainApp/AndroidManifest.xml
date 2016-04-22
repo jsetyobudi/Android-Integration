@@ -22,8 +22,8 @@
              android:name="com.example.tgk.integrationwithfragment.MainActivity3"/>-->
         <activity
             android:name="com.example.tgk.integrationwithfragment.CarbonFootprintMainActivity"/>
-      <!--  <activity
-            android:name="com.example.tgk.integrationwithfragment.AndroidListViewCursorAdaptorActivity"/>-->
+     <activity
+            android:name="com.example.android.fragments.MainActivity"/>
 
     </application>
 

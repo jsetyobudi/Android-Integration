@@ -34,9 +34,7 @@ import java.util.Calendar;
 public class CarbonFootprintMainActivity extends AppCompatActivity
         implements CarbonFootprintViewAllRecords.OnFootprintSelectedListener, CarbonFootprintViewDetailsFragment.OnFootprintListener{
 
-    /**
-     * vehicle spinner
-     */
+
     private Spinner vehicleSpinner;
     private Spinner distanceSpinner;
     private Spinner categorySpinner;
@@ -338,10 +336,10 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         }
         switch (id){
             case R.id.action_one:
-                go(MainActivity.class);
+                go(com.example.hwardak.tipcalculator.MainActivity.class);
                 break;
             case R.id.action_two:
-              //  go(MainActivity2.class);
+                go(com.example.android.fragments.MainActivity.class);
                 break;
             case R.id.action_three:
                 //go(MainActivity3.class);
@@ -424,5 +422,6 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    }
+
+}
 

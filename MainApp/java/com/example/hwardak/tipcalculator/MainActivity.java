@@ -226,10 +226,10 @@ public class MainActivity extends ActionBarActivity implements MainFragment.onUp
         }
         switch (id){
             case R.id.action_one:
-                go(MainActivity.class);
+                //go(com.example.hwardak.tipcalculator.MainActivity.class);
                 break;
             case R.id.action_two:
-                //  go(MainActivity2.class);
+                  go(com.example.android.fragments.MainActivity.class);
                 break;
             case R.id.action_three:
                 go(CarbonFootprintMainActivity.class);
