@@ -1,0 +1,170 @@
+package com.example.tgk.integrationwithfragment;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
+
+/**
+ * Created by Johan on 19-Apr-2016.
+ */
+public class CarbonFootprintViewAllRecords extends ListFragment {
+
+    CarbonFootprintDBAdapter dbHelper;
+    private SimpleCursorAdapter dataAdapter;
+    OnFootprintSelectedListener mCallback;
+
+    // The container Activity must implement this interface so the frag can deliver messages
+    public interface OnFootprintSelectedListener {
+        /** Called by HeadlinesFragment when a list item is selected */
+        public void onFootprintSelected(int position, long id);
+    }
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // We need to use a different list item layout for devices older than Honeycomb
+        int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
+                android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
+
+
+        // Create an array adapter for the list view, using the Ipsum headlines array
+        // setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Ipsum.Headlines));
+
+
+        dbHelper = new CarbonFootprintDBAdapter(getActivity());
+        dbHelper.open();
+
+        //Generate ListView from SQLite Database
+        displayListView();
+
+    }
+    /*
+     * Sets up a ListView with a SimpleCursorAdapter and a Cursor with all the rows
+     * from the database table.  Also sets up the handler for when an item is selected.
+     */
+    private void displayListView() {
+       // Cursor cursor = dbHelper.fetchAllFootprint();
+
+        // The desired columns to be bound
+        String[] columns = new String[]{
+               // CarbonfootprintDBAdapter.KEY_ROWID,
+                CarbonFootprintDBAdapter.KEY_CATEGORY,
+                CarbonFootprintDBAdapter.KEY_VEHICLE,
+                CarbonFootprintDBAdapter.KEY_DISTANCE,
+                CarbonFootprintDBAdapter.KEY_DATE,
+//                CarbonfootprintDBAdapter.KEY_NOTE,
+//                CarbonfootprintDBAdapter.KEY_FOOTPRINT
+
+        };
+
+        // the XML defined views which the data will be bound to
+        int[] to = new int[]{
+             //   R.id.rowid,
+                R.id.category,
+                R.id.vehicle,
+                R.id.distance,
+                R.id.date,
+//                R.id.note,
+//                R.id.footprint
+        };
+
+        // create the adapter using the cursor pointing to the desired data
+        //as well as the layout information
+        //cursor is null for now, but will be swapped by the following AsyncTask onPostExecute method
+        dataAdapter = new SimpleCursorAdapter(
+                getActivity(), R.layout.carbonfootprint_info,
+                null,      //notice the cursor is null for now
+                columns,
+                to, 0);
+
+        //This Java statement (beginning with "new" and ending with "}.execute();") executes an new instance
+        // of an anonymous class that extends AsyncTask.  The new instance is-a AsyncTask.
+        // Executes an AsyncTask to acquire the cursor on a background thread
+        //in onPostExecute, the real cursor will replace the null cursor
+        new AsyncTask<Void, Void, Cursor>() {
+            @Override
+            public Cursor doInBackground(Void... v) {
+                dbHelper = new CarbonFootprintDBAdapter(getActivity());
+                dbHelper.open();
+
+//                //Clean all data
+//                dbHelper.deleteAllCountries();
+//                //Add some data
+//                dbHelper.insertSomeCountries();
+
+                return dbHelper.fetchAllFootprint();
+            }
+
+            @Override
+            public void onPostExecute(Cursor c) {
+                dataAdapter.swapCursor(c);
+            }
+        }.execute();
+
+
+      //  ListView listView = (ListView) findViewById(R.id.listView1);
+        // Assign adapter to ListView
+
+        setListAdapter(dataAdapter);
+
+
+    }
+    @Override
+    public void onListItemClick(ListView listView, View view,
+                                int position, long id) {
+        // Get the cursor, positioned to the corresponding row in the result set
+        Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+
+        // Get the state's capital from this row in the database.
+        String countryCode =
+                cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
+
+        Toast.makeText(getActivity(),
+                countryCode, Toast.LENGTH_SHORT).show();
+
+        mCallback.onFootprintSelected(Integer.parseInt(countryCode), id);
+    }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+//
+    }// When in two-pane layout, set the listview to highlight the selected list item
+    //        // (We do this during onStart because at the point the listview is available.)
+//        if (getFragmentManager().findFragmentById(R.id.footprintDetail_fragment) != null) {
+//            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//        }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        try {
+            mCallback = (OnFootprintSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+}
