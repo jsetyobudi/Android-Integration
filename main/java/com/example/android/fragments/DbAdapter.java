@@ -1,4 +1,9 @@
-
+/**
+ * Course Name:CST2335_010 Graphical Interface Programming
+ Student Name: Xuan Li
+ Student Number:040811628
+ *
+ * */
 package com.example.android.fragments;
 
 import android.content.ContentValues;
@@ -113,9 +118,9 @@ public class DbAdapter {
         return cursor;
     }
 
-    public Cursor fetchContactByID(int ID) {
+    public Cursor fetchContactByID(long ID) {
         Cursor cursor = mDb.query(true, SQLITE_TABLE, new String[]{KEY_DATE, KEY_FIRSTNAME, KEY_LASTNAME, KEY_PHONE, KEY_EMAIL, KEY_NOTE},
-                KEY_ROWID + " LIKE '%" + ID + "%'", null, null, null, null, null);
+                KEY_ROWID + "=" + ID, null, null, null, null, null);
 
 
         if (cursor != null) {

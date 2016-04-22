@@ -1,4 +1,9 @@
-
+/**
+ * Course Name:CST2335_010 Graphical Interface Programming
+ Student Name: Xuan Li
+ Student Number:040811628
+ *
+ * */
 package com.example.android.fragments;
 
 import android.os.Bundle;
@@ -47,18 +52,11 @@ public class MainActivity extends FragmentActivity
     @Override
     public void viewContactDetail(int position, long id) {
 
-        ContactDetail ContactFrag = (ContactDetail)
-                getSupportFragmentManager().findFragmentById(R.id.list_fragment);
 
-        if (ContactFrag != null) {
-
-           ContactFrag.updateContactDetail(position, id);
-
-        } else {
 
             ContactDetail newFragment = new ContactDetail();
             Bundle args = new Bundle();
-            args.putInt(ContactDetail.ARG_POSITION, (int) id);
+            args.putLong(ContactDetail.ARG_POSITION,id);
             newFragment.setArguments(args);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -68,7 +66,7 @@ public class MainActivity extends FragmentActivity
             transaction.commit();
         }
 
-    }
+
 
     @Override
     public void addNewContact() {

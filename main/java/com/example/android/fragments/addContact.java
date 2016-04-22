@@ -1,3 +1,9 @@
+/**
+ * Course Name:CST2335_010 Graphical Interface Programming
+ Student Name: Xuan Li
+ Student Number:040811628
+ *
+ * */
 
 package com.example.android.fragments;
 
