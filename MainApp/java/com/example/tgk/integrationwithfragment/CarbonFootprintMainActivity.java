@@ -64,15 +64,17 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     /**
      * since i did not make a fragment for the add, i am forced to use this to ensure
      * the back button will go back to the main activity
+     * obselete method, onResume in CarbonFootprintViewAllRecords is new method
+     *
      */
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        startActivity(new Intent(this, CarbonFootprintMainActivity.class));
-        finish();
-
-    }
+//    @Override
+//    public void onBackPressed()
+//    {
+//        super.onBackPressed();
+//        startActivity(new Intent(this, CarbonFootprintMainActivity.class));
+//        finish();
+//
+//    }
 
     /**
      * onCreate, my mistake...i did not make the add a fragment, so everything is in here. it is very
@@ -406,18 +408,18 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
      */
     @Override
     public void onFootprintDeleted() {
-      go(CarbonFootprintMainActivity.class);
-//        CarbonFootprintViewAllRecords newFragment = new CarbonFootprintViewAllRecords();
-//        Bundle args = new Bundle();
-//        newFragment.setArguments(args);
-//
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.footprint_container, newFragment);
-//
-//        transaction.addToBackStack(null);
-//        //transaction.disallowAddToBackStack();
-//        // Commit the transaction
-//        transaction.commit();
+      //go(CarbonFootprintMainActivity.class);
+        CarbonFootprintViewAllRecords newFragment = new CarbonFootprintViewAllRecords();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.footprint_container, newFragment);
+
+        transaction.addToBackStack(null);
+        //transaction.disallowAddToBackStack();
+        // Commit the transaction
+        transaction.commit();
     }
 
     }
