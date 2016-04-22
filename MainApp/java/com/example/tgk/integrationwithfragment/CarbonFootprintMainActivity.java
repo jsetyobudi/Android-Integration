@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hwardak.tipcalculator.MainActivity;
+
 import java.text.NumberFormat;
 import java.util.Calendar;
 
@@ -336,16 +338,16 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
         }
         switch (id){
             case R.id.action_one:
-                //go(MainActivity.class);
+                go(MainActivity.class);
                 break;
             case R.id.action_two:
-                go(MainActivity2.class);
+              //  go(MainActivity2.class);
                 break;
             case R.id.action_three:
-                go(MainActivity3.class);
+                //go(MainActivity3.class);
                 break;
             case R.id.action_four:
-                go(MainActivity4.class);
+              //  go(MainActivity4.class);
                 break;
         }
 

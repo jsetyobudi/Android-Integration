@@ -18,9 +18,174 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_window" />
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:baselineAligned="false">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Bill     "
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:clickable="false"
+            android:background="#bbc8ef"
+            android:id="@+id/currencySign1" />
+
+        <EditText
+            android:text="0.00"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#bbc8ef"
+            android:inputType="numberDecimal"
+            android:textSize="30dp"
+            android:gravity="center_vertical|right"
+            android:id="@+id/billField" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Tip     "
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:clickable="false"
+            android:background="#d4daef"
+            android:id="@+id/currencySign2" />
+
+        <EditText
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#d4daef"
+            android:textSize="30dp"
+            android:gravity="center_vertical|right"
+            android:id="@+id/tipField"
+            android:enabled="true"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Total  "
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:clickable="false"
+            android:background="#dee2ee"
+            android:id="@+id/currencySign" />
+
+        <EditText
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#dee2ee"
+            android:textSize="30dp"
+            android:gravity="center_vertical|right"
+            android:id="@+id/totalField" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#daf9d7"
+        android:weightSum="3">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Record"
+            android:background="#a6f487"
+            android:id="@+id/addRecordButton"
+            android:onClick="onAddRecordButtonClickToDatabase" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="View Records"
+            android:background="#eefc59"
+            android:id="@+id/viewRecordButton" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Help"
+            android:background="#fa5858"
+            android:id="@+id/helpButton"
+            android:onClick="onHelpButtonClick" />
+
+    </LinearLayout>
+
+
+
+    <FrameLayout
+        android:id="@+id/mainFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_weight="5"
+        android:layout_height="0dp">
+
+
+    </FrameLayout>
+
 
 </LinearLayout>
