@@ -17,11 +17,13 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 
 public class UserList extends Fragment {
 
     onContactListListener mCallback;
+    private TextView summary;
 
     public interface onContactListListener {
 
@@ -40,7 +42,7 @@ public class UserList extends Fragment {
 
         listView = (ListView) fragmentView.findViewById(R.id.list_view);
         myFilter = (EditText) fragmentView.findViewById(R.id.myFilter);
-
+        summary = (TextView) fragmentView.findViewById(R.id.summary);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,7 +88,14 @@ public class UserList extends Fragment {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                dataAdapter.getFilter().filter(s.toString());
+//                dataAdapter.getFilter().filter(s.toString());
+             Cursor cursor =dbHelper.getContactByInput(s.toString());
+
+                if(cursor!=null){
+                    String output=cursor.getString(cursor.getColumnIndex(DbAdapter.KEY_PHONE));
+                    summary.setText("Number "+ output+ " has "+ cursor.getCount()+" record" );
+                }
+
             }
         });
 

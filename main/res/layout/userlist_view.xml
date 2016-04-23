@@ -24,6 +24,12 @@
         android:hint="Type here to filter&#8230;">
         <requestFocus />
     </EditText>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Summary"
+        android:id="@+id/summary" />
 
     <ListView
         android:id="@+id/list_view"

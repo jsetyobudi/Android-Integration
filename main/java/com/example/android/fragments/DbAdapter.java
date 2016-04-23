@@ -44,6 +44,21 @@ public class DbAdapter {
                     KEY_NOTE + " TEXT, " +
                     KEY_DATE + " TEXT " +
                     ");";
+    private Cursor mCursor;
+
+    public Cursor getContactByInput(String inputText) {
+        mCursor = mDb.query(true, SQLITE_TABLE, new String[]{KEY_ROWID,
+                        KEY_DATE, KEY_FIRSTNAME, KEY_LASTNAME, KEY_PHONE, KEY_EMAIL, KEY_NOTE},
+                KEY_LASTNAME + " like '%" + inputText + "%'", null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+
+
 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
