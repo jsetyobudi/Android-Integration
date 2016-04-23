@@ -182,9 +182,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
 
       //  ListView listView = (ListView) findViewById(R.id.listView1);
         // Assign adapter to ListView
-
         setListAdapter(dataAdapter);
-
 
     }
 
@@ -204,7 +202,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         // Get the state's capital from this row in the database.
         String countryCode =
                 cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
-
+           //testing code
 //        Toast.makeText(getActivity(),
 //                countryCode, Toast.LENGTH_SHORT).show();
 
@@ -212,26 +210,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     }
 
 
-    /**
-     * Back button to main activity,
-     * edited code from http://stackoverflow.com/questions/7992216/android-fragment-handle-back-button-press
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    startActivity(new Intent(getActivity(), CarbonFootprintMainActivity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
+
 
     /**
      * on start
@@ -239,15 +218,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-//
-    }// When in two-pane layout, set the listview to highlight the selected list item
-
-
-    //        // (We do this during onStart because at the point the listview is available.)
-//        if (getFragmentManager().findFragmentById(R.id.footprintDetail_fragment) != null) {
-//            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        }
+    }
     /**
      * attaching interface
      * @param activity

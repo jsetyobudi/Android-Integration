@@ -99,7 +99,7 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         Log.d("Count", String.valueOf(cursor.getCount()));
         NumberFormat format = NumberFormat.getInstance();
         if(cursor.getCount() > 0) {
-// get values from cursor here
+            // get values from cursor here
             String rowid = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
             String category = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_CATEGORY));
             String vehicle = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_VEHICLE));
@@ -190,6 +190,4 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
                     + " must implement OnFootprintListener");
         }
     }
-
-
 }

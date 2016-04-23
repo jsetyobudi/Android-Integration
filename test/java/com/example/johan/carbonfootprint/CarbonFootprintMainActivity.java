@@ -32,7 +32,8 @@ import java.util.Calendar;
  * Created by Johan on 16-Apr-2016.
  */
 public class CarbonFootprintMainActivity extends AppCompatActivity
-        implements CarbonFootprintViewAllRecords.OnFootprintSelectedListener, CarbonFootprintViewDetailsFragment.OnFootprintListener     {
+        implements CarbonFootprintViewAllRecords.OnFootprintSelectedListener, CarbonFootprintViewDetailsFragment.OnFootprintListener
+        , CarbonFootprintAdd.OnViewAllRecordsSelectedListener, CarbonFootprintAdd.OnHelpSelectedListener        {
 
 
     private Spinner vehicleSpinner;
@@ -48,9 +49,9 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     private String date;
     private String note;
     private String distance;
-    private int tripYear;
-    private int tripMonth;
-    private int tripDay;
+//    private int tripYear;
+//    private int tripMonth;
+//    private int tripDay;
     private TextView tripDateDisplay;
     private TextView carbonFootprint;
     private EditText distanceDisplay;
@@ -62,20 +63,7 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     static final int DATE_DIALOG_ID = 0;
 
     /**
-     * onBack method, closes app if on this activity if you press the back button
-     *
-     */
-//    @Override
-//    public void onBackPressed()
-//    {
-//       // super.onBackPressed();
-//       // moveTaskToBack(true);
-//        //startActivity(new Intent(this, CarbonFootprintMainActivity.class));
-//        finish();
-//
-//    }
-
-    /**
+     * UPDATE: updated code so a lot of commented out
      * onCreate, my mistake...i did not make the add a fragment, so everything is in here. it is very
      * messy and i realized too late that i had to change it. so all the action listeners, spinner
      * listeners, button listeners, everything is in this method
@@ -84,224 +72,253 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carbonfootprint);
+        setContentView(R.layout.carbonfootprint_articles);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+// Check whether the activity is using the layout version with
+        // the fragment_container FrameLayout. If so, we must add the first fragment
+        if (findViewById(R.id.footprint_container) != null) {
 
-
-        vehicleSpinner = (Spinner)findViewById(R.id.vehicleSpinner);
-        distanceSpinner = (Spinner)findViewById(R.id.distanceSpinner);
-        categorySpinner = (Spinner)findViewById(R.id.categorySpinner);
-
-        final ArrayAdapter<String> vehicleAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
-                android.R.layout.simple_spinner_item,vehicle);
-        final  ArrayAdapter<String> distanceAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
-                android.R.layout.simple_spinner_item,distanceType);
-        final ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
-                android.R.layout.simple_spinner_item,category);
-
-        distanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vehicleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        vehicleSpinner.setAdapter(vehicleAdapter);
-        vehicleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                vehicleChoice = vehicleSpinner.getSelectedItem().toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        distanceSpinner.setAdapter(distanceAdapter);
-        distanceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                distanceTypeChoice = distanceSpinner.getSelectedItem().toString();
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+            // Create an instance of ExampleFragment
+            CarbonFootprintAdd firstFragment = new CarbonFootprintAdd();
 
-        categorySpinner.setAdapter(categoryAdapter);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                categoryChoice = categorySpinner.getSelectedItem().toString();
-            }
+            // In case this activity was started with special instructions from an Intent,
+            // pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        tripDateDisplay = (TextView) findViewById(R.id.showMyDate);
-        tripPickDate = (Button) findViewById(R.id.myDatePickerButton);
-
-        tripPickDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                showDialog(DATE_DIALOG_ID);
-            }
-        });
-        // get the current date
-        final Calendar c = Calendar.getInstance();
-        tripYear = c.get(Calendar.YEAR);
-        tripMonth = c.get(Calendar.MONTH);
-        tripDay = c.get(Calendar.DAY_OF_MONTH);
-        // display the current date
-        updateDisplay();
-        distanceDisplay = (EditText) findViewById(R.id.distanceNumber);
-        noteDisplay = (EditText) findViewById(R.id.noteText);
-        carbonFootprint = (TextView) findViewById(R.id.footprintInTonnes);
-        submitButton = (Button) findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                distance = distanceDisplay.getText().toString();
-                if(distance.isEmpty() || distance == null) {
-                    Toast.makeText(CarbonFootprintMainActivity.this,"Distance cannot be empty. Please try again.",Toast.LENGTH_LONG).show();
-                } else {
-                    note = noteDisplay.getText().toString();
-                    date = tripDateDisplay.getText().toString();
-                    double total;
-                    double distanceKm = Double.parseDouble(distance);
-
-                   total = calculateFootprint(vehicleChoice, distance, distanceTypeChoice);
-                    if (distanceTypeChoice.equalsIgnoreCase("miles")) {
-                        distanceKm = distanceKm * 1.60;
-                    }
-                    NumberFormat format = NumberFormat.getInstance();
-                    // test.format(total);
-                    carbonFootprint.setText(format.format(total) + " Tonnes");
-                    footprint = new CarbonFootprintDBAdapter(CarbonFootprintMainActivity.this);
-                    footprint.open();
-                    footprint.createFootprint(categoryChoice, vehicleChoice,
-                            Double.toString(distanceKm), date, note, Double.toString(total));
-                    footprint.close();
-                }
-            }
-        });
-        viewAllRecordsButton = (Button) findViewById(R.id.viewAllRecords);
-        viewAllRecordsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // ListView listView = (ListView) findViewById(R.id.listView2);
-
-                CarbonFootprintViewAllRecords firstFragment = new CarbonFootprintViewAllRecords();
-                setContentView(R.layout.carbonfootprint_articles);
-                firstFragment.setArguments(getIntent().getExtras());
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.footprint_container, firstFragment).commit();
-
-            }
-        });
-        helpButton = (Button) findViewById(R.id.help);
-        helpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CarbonFootprintHelp firstFragment = new CarbonFootprintHelp();
-                setContentView(R.layout.carbonfootprint_articles);
-                firstFragment.setArguments(getIntent().getExtras());
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.footprint_container, firstFragment).commit();
-            }
-        });
-        setSupportActionBar(myToolbar);
-    }
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.footprint_container, firstFragment).commit();
+            //everything below here is my old code, please ignore
+//        CarbonFootprintAdd firstFragment = new CarbonFootprintAdd();
+//        setContentView(R.layout.carbonfootprint_add);
+//        firstFragment.setArguments(getIntent().getExtras());
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.footprint_container, firstFragment).commit();
 
 
-    /**
-     * calculating carbon footprint, and returning the number in tonnes
-     * @param vehicle
-     * @param distance
-     * @param distanceType
-     * @return
-     */
-    private double calculateFootprint( String vehicle, String distance, String distanceType) {
-        Double distanceKm;
-        Double vehicleFootprintPerThousandKmPerTonne = 0.0;
-        Double total;
-            switch (vehicle) {
-                case "Motorcycle":
-                    vehicleFootprintPerThousandKmPerTonne = 0.12;
-                    break;
-                case "Car":
-                    vehicleFootprintPerThousandKmPerTonne = 0.19;
-                    break;
-                case "Diesel Car":
-                    vehicleFootprintPerThousandKmPerTonne = 0.18;
-                    break;
-                case "Truck":
-                    vehicleFootprintPerThousandKmPerTonne = 0.29;
-                    break;
-                case "Diesel Truck":
-                    vehicleFootprintPerThousandKmPerTonne = 0.23;
-                    break;
-                case "Van":
-                    vehicleFootprintPerThousandKmPerTonne = 0.25;
-                    break;
-                case "SUV":
-                    vehicleFootprintPerThousandKmPerTonne = 0.29;
-                    break;
-                case "Airplane":
-                    vehicleFootprintPerThousandKmPerTonne = 0.05;
-                    break;
-                case "Bus":
-                    vehicleFootprintPerThousandKmPerTonne = 0.11;
-                    break;
-                case "Train":
-                    vehicleFootprintPerThousandKmPerTonne = 0.05;
-                    break;
-                default:
-                    break;
-            }
-            distanceKm = Double.parseDouble(distance);
-            if (distanceType.equalsIgnoreCase("miles")) {
-                distanceKm = distanceKm * 1.60;
-            }
-            total = vehicleFootprintPerThousandKmPerTonne * (distanceKm / 1000);
-        return total;
-    }
-
-    /**
-     * updating date
-     */
-    private void updateDisplay() {
-        this.tripDateDisplay.setText(
-                new StringBuilder()
-                        .append(tripMonth + 1).append("-") //adding 1 since month starts from 0
-                        .append(tripDay).append("-")
-                        .append(tripYear).append(" "));
-    }
-    private DatePickerDialog.OnDateSetListener mDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    tripYear = year;
-                    tripMonth = monthOfYear;
-                    tripDay = dayOfMonth;
-                    updateDisplay();
-                }
-            };
-
-    /**
-     * getting date from user
-     * @param id
-     * @return
-     */
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG_ID: return new DatePickerDialog(this,
-                                 mDateSetListener, tripYear, tripMonth, tripDay);
+//
+//        vehicleSpinner = (Spinner)findViewById(R.id.vehicleSpinner);
+//        distanceSpinner = (Spinner)findViewById(R.id.distanceSpinner);
+//        categorySpinner = (Spinner)findViewById(R.id.categorySpinner);
+//
+//        final ArrayAdapter<String> vehicleAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
+//                android.R.layout.simple_spinner_item,vehicle);
+//        final  ArrayAdapter<String> distanceAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
+//                android.R.layout.simple_spinner_item,distanceType);
+//        final ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(CarbonFootprintMainActivity.this,
+//                android.R.layout.simple_spinner_item,category);
+//
+//        distanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        vehicleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//        vehicleSpinner.setAdapter(vehicleAdapter);
+//        vehicleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view,
+//                                       int position, long id) {
+//                vehicleChoice = vehicleSpinner.getSelectedItem().toString();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//
+//        distanceSpinner.setAdapter(distanceAdapter);
+//        distanceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view,
+//                                       int position, long id) {
+//                distanceTypeChoice = distanceSpinner.getSelectedItem().toString();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//
+//        categorySpinner.setAdapter(categoryAdapter);
+//        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view,
+//                                       int position, long id) {
+//                categoryChoice = categorySpinner.getSelectedItem().toString();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//
+//        tripDateDisplay = (TextView) findViewById(R.id.showMyDate);
+//        tripPickDate = (Button) findViewById(R.id.myDatePickerButton);
+//
+//        tripPickDate.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                showDialog(DATE_DIALOG_ID);
+//            }
+//        });
+//        // get the current date
+//        final Calendar c = Calendar.getInstance();
+//        tripYear = c.get(Calendar.YEAR);
+//        tripMonth = c.get(Calendar.MONTH);
+//        tripDay = c.get(Calendar.DAY_OF_MONTH);
+//        // display the current date
+//        updateDisplay();
+//        distanceDisplay = (EditText) findViewById(R.id.distanceNumber);
+//        noteDisplay = (EditText) findViewById(R.id.noteText);
+//        carbonFootprint = (TextView) findViewById(R.id.footprintInTonnes);
+//        submitButton = (Button) findViewById(R.id.submitButton);
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                distance = distanceDisplay.getText().toString();
+//                if(distance.isEmpty() || distance == null) {
+//                    Toast.makeText(CarbonFootprintMainActivity.this,"Distance cannot be empty. Please try again.",Toast.LENGTH_LONG).show();
+//                } else {
+//                    note = noteDisplay.getText().toString();
+//                    date = tripDateDisplay.getText().toString();
+//                    double total;
+//                    double distanceKm = Double.parseDouble(distance);
+//
+//                   total = calculateFootprint(vehicleChoice, distance, distanceTypeChoice);
+//                    if (distanceTypeChoice.equalsIgnoreCase("miles")) {
+//                        distanceKm = distanceKm * 1.60;
+//                    }
+//                    NumberFormat format = NumberFormat.getInstance();
+//                    // test.format(total);
+//                    carbonFootprint.setText(format.format(total) + " Tonnes");
+//                    footprint = new CarbonFootprintDBAdapter(CarbonFootprintMainActivity.this);
+//                    footprint.open();
+//                    footprint.createFootprint(categoryChoice, vehicleChoice,
+//                            Double.toString(distanceKm), date, note, Double.toString(total));
+//                    footprint.close();
+//                }
+//            }
+//        });
+//        viewAllRecordsButton = (Button) findViewById(R.id.viewAllRecords);
+//        viewAllRecordsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               // ListView listView = (ListView) findViewById(R.id.listView2);
+//
+//                CarbonFootprintViewAllRecords firstFragment = new CarbonFootprintViewAllRecords();
+//                setContentView(R.layout.carbonfootprint_articles);
+//                firstFragment.setArguments(getIntent().getExtras());
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.footprint_container, firstFragment).commit();
+//
+//            }
+//        });
+//        helpButton = (Button) findViewById(R.id.help);
+//        helpButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CarbonFootprintHelp firstFragment = new CarbonFootprintHelp();
+//                setContentView(R.layout.carbonfootprint_articles);
+//                firstFragment.setArguments(getIntent().getExtras());
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.footprint_container, firstFragment).commit();
+//            }
+//        });
+            setSupportActionBar(myToolbar);
         }
-        return null;
     }
+
+
+//    /**
+//     * calculating carbon footprint, and returning the number in tonnes
+//     * @param vehicle
+//     * @param distance
+//     * @param distanceType
+//     * @return
+//     */
+//    private double calculateFootprint( String vehicle, String distance, String distanceType) {
+//        Double distanceKm;
+//        Double vehicleFootprintPerThousandKmPerTonne = 0.0;
+//        Double total;
+//            switch (vehicle) {
+//                case "Motorcycle":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.12;
+//                    break;
+//                case "Car":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.19;
+//                    break;
+//                case "Diesel Car":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.18;
+//                    break;
+//                case "Truck":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.29;
+//                    break;
+//                case "Diesel Truck":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.23;
+//                    break;
+//                case "Van":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.25;
+//                    break;
+//                case "SUV":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.29;
+//                    break;
+//                case "Airplane":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.05;
+//                    break;
+//                case "Bus":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.11;
+//                    break;
+//                case "Train":
+//                    vehicleFootprintPerThousandKmPerTonne = 0.05;
+//                    break;
+//                default:
+//                    break;
+//            }
+//            distanceKm = Double.parseDouble(distance);
+//            if (distanceType.equalsIgnoreCase("miles")) {
+//                distanceKm = distanceKm * 1.60;
+//            }
+//            total = vehicleFootprintPerThousandKmPerTonne * (distanceKm / 1000);
+//        return total;
+//    }
+
+//    /**
+//     * updating date
+//     */
+//    private void updateDisplay() {
+//        this.tripDateDisplay.setText(
+//                new StringBuilder()
+//                        .append(tripMonth + 1).append("-") //adding 1 since month starts from 0
+//                        .append(tripDay).append("-")
+//                        .append(tripYear).append(" "));
+//    }
+//    private DatePickerDialog.OnDateSetListener mDateSetListener =
+//            new DatePickerDialog.OnDateSetListener() {
+//                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                    tripYear = year;
+//                    tripMonth = monthOfYear;
+//                    tripDay = dayOfMonth;
+//                    updateDisplay();
+//                }
+//            };
+
+//    /**
+//     * getting date from user
+//     * @param id
+//     * @return
+//     */
+//    @Override
+//    protected Dialog onCreateDialog(int id) {
+//        switch (id) {
+//            case DATE_DIALOG_ID: return new DatePickerDialog(this,
+//                                 mDateSetListener, tripYear, tripMonth, tripDay);
+//        }
+//        return null;
+//    }
 
 
     /**
@@ -421,5 +438,46 @@ public class CarbonFootprintMainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onHelpSelected() {
+//        CarbonFootprintHelp firstFragment = new CarbonFootprintHelp();
+//        setContentView(R.layout.carbonfootprint_articles);
+//        firstFragment.setArguments(getIntent().getExtras());
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.footprint_container, firstFragment).commit();
+        CarbonFootprintHelp newFragment = new CarbonFootprintHelp();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.footprint_container, newFragment);
+
+        transaction.addToBackStack(null);
+        //transaction.disallowAddToBackStack();
+        // Commit the transaction
+        transaction.commit();
+
+    }
+
+    @Override
+    public void onViewAllRecordsSelected() {
+//        CarbonFootprintViewAllRecords firstFragment = new CarbonFootprintViewAllRecords();
+//        setContentView(R.layout.carbonfootprint_articles);
+//        firstFragment.setArguments(getIntent().getExtras());
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.footprint_container, firstFragment).commit();
+        CarbonFootprintViewAllRecords newFragment = new CarbonFootprintViewAllRecords();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.footprint_container, newFragment);
+
+        transaction.addToBackStack(null);
+        //transaction.disallowAddToBackStack();
+        // Commit the transaction
+        transaction.commit();
+
+    }
 }
 

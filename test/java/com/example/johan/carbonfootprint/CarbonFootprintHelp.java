@@ -109,27 +109,6 @@ public class CarbonFootprintHelp extends Fragment {
     }
 
     /**
-     * Back button to main activity,
-     * edited code from http://stackoverflow.com/questions/7992216/android-fragment-handle-back-button-press
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    startActivity(new Intent(getActivity(), CarbonFootprintMainActivity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    /**
      * onStart
      */
     @Override
