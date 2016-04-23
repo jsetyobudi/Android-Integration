@@ -150,24 +150,8 @@ public class CarbonFootprintDBAdapter {
      * @throws SQLException
      */
     public boolean deleteCertainFootprint(String inputText) throws SQLException {
-//        Log.w(TAG, inputText);
-//        Cursor mCursor = null;
-//        if (inputText == null  ||  inputText.length () == 0)  {
-//            mCursor = mDb.query(SQLITE_TABLE, new String[] {KEY_ROWID,
-//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
-//                    null, null, null, null, null);
-//
-//        }
-//        else {
-//            mCursor = mDb.delete(true, SQLITE_TABLE, new String[] {KEY_ROWID,
-//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
-//                    KEY_ROWID + " like '%" + inputText + "%'", null,
-//                    null, null, null, null);
 
             return mDb.delete(SQLITE_TABLE, KEY_ROWID + " like '%" + inputText + "%'", null ) > 0;
-
-        //}
-
     }
 
     /**
@@ -198,10 +182,13 @@ public class CarbonFootprintDBAdapter {
         return mCursor;
     }
 
-    public Double fetchSumFootprintCategory(String name) {
-        Log.w(TAG, name);
+    /**
+     * @return
+     */
+    public Double fetchSumTotalFootprint() {
+        Log.w(TAG, "footprint sum");
         Cursor mCursor = null;
-        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE +" where category like '%" +name +"%'",null);
+        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE,null);
         mCursor.moveToFirst();
         double sum = 0;
 
@@ -209,32 +196,16 @@ public class CarbonFootprintDBAdapter {
             sum = mCursor.getDouble(0);
         }
         return sum;
-//
     }
 
-    public Double fetchSumFootprintVehicle(String name) {
-      //  Cursor cur = db.rawQuery("SELECT SUM(myColumn) FROM myTable", null);
-//        if(cur.moveToFirst())
-//        {
-//            return cur.getInt(0);
-//        }
+    /**
+     * @param name
+     * @return
+     */
+    public Double fetchSumFootprintColumn(String name, String column) {
         Log.w(TAG, name);
         Cursor mCursor = null;
-        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE +" where vehicle like '%" +name +"%'",null);
-//
-//        if (inputText == null || inputText.length() == 0) {
-//            mCursor = mDb.query(SQLITE_TABLE, new String[]{KEY_ROWID,
-//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
-//                    null, null, null, null, null);
-//
-//        }
-//        else {
-//            mCursor = mDb.query(true, SQLITE_TABLE, new String[] {KEY_ROWID,
-//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
-//                    KEY_ROWID + " like '%" + inputText + "%'", null,
-//                    null, null, null, null);
-//
-//        }
+        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE +" where "+column +" like '%" +name +"%'",null);
         mCursor.moveToFirst();
         double sum = 0;
 

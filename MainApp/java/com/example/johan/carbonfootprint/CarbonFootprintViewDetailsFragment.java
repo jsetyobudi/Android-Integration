@@ -38,7 +38,11 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         public void onFootprintDeleted();
 
     }
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
     /**
      * on create
      * @param inflater
@@ -84,8 +88,6 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         }
     }
 
-
-
     /**
      * getting data from database, and displaying detailed info to user
      * @param position
@@ -99,7 +101,7 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         Log.d("Count", String.valueOf(cursor.getCount()));
         NumberFormat format = NumberFormat.getInstance();
         if(cursor.getCount() > 0) {
-// get values from cursor here
+            // get values from cursor here
             String rowid = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
             String category = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_CATEGORY));
             String vehicle = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_VEHICLE));
@@ -107,11 +109,16 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
             String date = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_DATE));
             String note = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_NOTE));
             double footprint = cursor.getDouble(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_FOOTPRINT));
-            double cursor2 = dbHelper.fetchSumFootprintCategory(category);
-            double cursor3 = dbHelper.fetchSumFootprintVehicle(vehicle);
+            double cursor2 = dbHelper.fetchSumFootprintColumn(category, CarbonFootprintDBAdapter.KEY_CATEGORY);
+            double cursor3 = dbHelper.fetchSumFootprintColumn(vehicle, CarbonFootprintDBAdapter.KEY_VEHICLE);
+            double cursor4 = dbHelper.fetchSumTotalFootprint();
 
+            String sumTotal = String.valueOf(format.format(cursor4));
             String sumCategory = String.valueOf(format.format(cursor2));
             String sumVehicle = String.valueOf(format.format(cursor3));
+
+            TextView sumTotalText = (TextView) getActivity().findViewById(R.id.summaryTotalFootprint);
+            sumTotalText.setText("Total Carbon Footprint: "+sumTotal +" Tonnes");
             TextView sumCategoryText = (TextView) getActivity().findViewById(R.id.summaryCategoryNumber);
             sumCategoryText.setText("Total Footprint "+category +" : "+sumCategory +" Tonnes");
 
@@ -165,7 +172,6 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         dbHelper.open();
         dbHelper.deleteCertainFootprint(String.valueOf(mCurrentPosition));
         mCallback.onFootprintDeleted();
-        //go(CarbonFootprintMainActivity.class);
     }
 
     /**
@@ -185,6 +191,4 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
                     + " must implement OnFootprintListener");
         }
     }
-
-
 }

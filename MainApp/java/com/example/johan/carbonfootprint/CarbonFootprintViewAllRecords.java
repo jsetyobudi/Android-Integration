@@ -47,15 +47,9 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // We need to use a different list item layout for devices older than Honeycomb
-        int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
-
         Toolbar myToolbar = (Toolbar)  getActivity().findViewById(R.id.my_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
         setHasOptionsMenu(true);
-        // Create an array adapter for the list view, using the Ipsum headlines array
-        // setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Ipsum.Headlines));
 
         dbHelper = new CarbonFootprintDBAdapter(getActivity());
         dbHelper.open();
@@ -64,11 +58,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         displayListView();
 
     }
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        setHasOptionsMenu(true);
-//    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //super.onCreateOptionsMenu(menu, getActivity().getMenuInflater());
@@ -86,7 +76,6 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -121,29 +110,21 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
      * from the database table.  Also sets up the handler for when an item is selected.
      */
     private void displayListView() {
-       // Cursor cursor = dbHelper.fetchAllFootprint();
 
         // The desired columns to be bound
         String[] columns = new String[]{
-               // CarbonfootprintDBAdapter.KEY_ROWID,
                 CarbonFootprintDBAdapter.KEY_CATEGORY,
                 CarbonFootprintDBAdapter.KEY_VEHICLE,
                 CarbonFootprintDBAdapter.KEY_DISTANCE,
                 CarbonFootprintDBAdapter.KEY_DATE,
-//                CarbonfootprintDBAdapter.KEY_NOTE,
-//                CarbonfootprintDBAdapter.KEY_FOOTPRINT
-
         };
 
         // the XML defined views which the data will be bound to
         int[] to = new int[]{
-             //   R.id.rowid,
                 R.id.category,
                 R.id.vehicle,
                 R.id.distance,
                 R.id.date,
-//                R.id.note,
-//                R.id.footprint
         };
 
         // create the adapter using the cursor pointing to the desired data
@@ -165,10 +146,6 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
                 dbHelper = new CarbonFootprintDBAdapter(getActivity());
                 dbHelper.open();
 
-//                //Clean all data
-//                dbHelper.deleteAllCountries();
-//                //Add some data
-//                dbHelper.insertSomeCountries();
 
                 return dbHelper.fetchAllFootprint();
             }
@@ -182,9 +159,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
 
       //  ListView listView = (ListView) findViewById(R.id.listView1);
         // Assign adapter to ListView
-
         setListAdapter(dataAdapter);
-
 
     }
 
@@ -204,7 +179,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         // Get the state's capital from this row in the database.
         String countryCode =
                 cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
-
+           //testing code
 //        Toast.makeText(getActivity(),
 //                countryCode, Toast.LENGTH_SHORT).show();
 
@@ -212,42 +187,16 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
     }
 
 
-    /**
-     * Back button to main activity,
-     * edited code from http://stackoverflow.com/questions/7992216/android-fragment-handle-back-button-press
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    startActivity(new Intent(getActivity(), CarbonFootprintMainActivity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
+
 
     /**
      * on start
      */
     @Override
     public void onStart() {
+
         super.onStart();
-
-//
-    }// When in two-pane layout, set the listview to highlight the selected list item
-
-
-    //        // (We do this during onStart because at the point the listview is available.)
-//        if (getFragmentManager().findFragmentById(R.id.footprintDetail_fragment) != null) {
-//            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        }
+    }
     /**
      * attaching interface
      * @param activity
@@ -262,7 +211,7 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
             mCallback = (OnFootprintSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement OnFootprintSelectedListener");
         }
     }
 }

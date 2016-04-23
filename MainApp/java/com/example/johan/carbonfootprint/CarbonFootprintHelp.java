@@ -43,22 +43,38 @@ public class CarbonFootprintHelp extends Fragment {
         TextView help = (TextView) view.findViewById(R.id.helpText);
         help.setText("This application was made by Johan Setyobudi for CST 2335. This application is " +
                 " a carbon footprint calculator. It calculates your carbon footprint for a vehicle " +
-                "and is measured in tonnes. \n\nTo use this app please choose a category, vehicle type, distance" +
+                "and is measured in tonnes. \n\nTo use this app please choose a category, vehicle type, distance " +
                 "and a date at minimum. The note is extra information that is not needed. Then press " +
-                "the add button to add your trip into the database. \n\nThere is also a view all records button" +
-                " that will view all the current records inside the database. Clicking on one will bring you" +
-                " to another page that will display the record in more detail, give you a small summary of the total carbon footprint for the category and vehicle type" +
-                ", and also give you the option to" +
-                " delete it.");
+                "the add button to add your trip into the database. \n\nThere is also a view all records button " +
+                "that will view all the current records inside the database. Clicking on one will bring you " +
+                "to another page that will display the record in more detail, give you a small summary of the total carbon footprint for the category, vehicle type " +
+                "and overall total, and also give you the option to delete the certain record.");
 
         // Inflate the layout for this fragment
         return view;
     }
+
+    /**
+     * Creating the fragment menu
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.fragment_menu, menu);
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    /**
+     * Switching to different activities
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -98,34 +114,11 @@ public class CarbonFootprintHelp extends Fragment {
     }
 
     /**
-     * Back button to main activity,
-     * edited code from http://stackoverflow.com/questions/7992216/android-fragment-handle-back-button-press
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    startActivity(new Intent(getActivity(), CarbonFootprintMainActivity.class));
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-    /**
      * onStart
      */
     @Override
     public void onStart() {
         super.onStart();
-
     }
-
-
 }
 
