@@ -3,8 +3,13 @@ package com.example.johan.carbonfootprint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -32,6 +37,9 @@ public class CarbonFootprintHelp extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.carbonfootprint_help, container, false);
+        Toolbar myToolbar = (Toolbar)  getActivity().findViewById(R.id.my_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        setHasOptionsMenu(true);
         TextView help = (TextView) view.findViewById(R.id.helpText);
         help.setText("This application was made by Johan Setyobudi for CST 2335. This application is " +
                 " a carbon footprint calculator. It calculates your carbon footprint for a vehicle " +
@@ -39,12 +47,56 @@ public class CarbonFootprintHelp extends Fragment {
                 "and a date at minimum. The note is extra information that is not needed. Then press " +
                 "the add button to add your trip into the database. \n\nThere is also a view all records button" +
                 " that will view all the current records inside the database. Clicking on one will bring you" +
-                " to another page that will display the record in more detail, and also give you the option to" +
+                " to another page that will display the record in more detail, give you a small summary of the total carbon footprint for the category and vehicle type" +
+                ", and also give you the option to" +
                 " delete it.");
 
         // Inflate the layout for this fragment
         return view;
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.fragment_menu, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        switch (id){
+            case R.id.action_one:
+                go(com.example.hwardak.tipcalculator.MainActivity.class);
+                break;
+            case R.id.action_two:
+                go(com.example.diego.activitytracker.MainActivity.class);
+                break;
+            case R.id.action_three:
+                //go(com.example.johan.carbonfootprint.CarbonFootprintMainActivity.class);
+                break;
+            case R.id.action_four:
+                go(com.example.xuan.contactlist.MainActivity.class);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * change activities
+     * @param c
+     */
+    private void go(Class c){
+        Intent intent = new Intent(getActivity(), c);
+        startActivity(intent);
+    }
+
     /**
      * Back button to main activity,
      * edited code from http://stackoverflow.com/questions/7992216/android-fragment-handle-back-button-press

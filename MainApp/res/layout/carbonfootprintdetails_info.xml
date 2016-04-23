@@ -8,6 +8,33 @@ This source code is provided to students of CST2335 for educational purposes onl
         android:layout_width="fill_parent" android:layout_height="fill_parent"
         android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/summaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textSize="30dp"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:text="Summary"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/summaryCategoryNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textSize="18dp"
+        android:padding="5dp"
+        android:text="TextView" />
+    <TextView
+        android:id="@+id/summaryVehicleNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:padding="5dp"
+        android:textSize="18dp"
+        android:text="TextView" />
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
@@ -16,69 +43,76 @@ android:orientation="vertical"
 android:padding="6dip" >
     <TextView
         android:id="@+id/textView01"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="ID: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
         android:id="@+id/textView1"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView01"
         android:layout_below="@+id/textView01"
         android:text="Category: "
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView2"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="Vehicle: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView3"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
-        android:textSize="15dp"
-        android:text="Distance in Km: "
+        android:textSize="18dp"
+        android:text="Distance: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView4"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="Date: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
         android:id="@+id/textView5"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView4"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="Note: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
         android:id="@+id/textView6"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView5"
-        android:textSize="15dp"
-        android:text="Carbon Footprint in Tonnes: "
+        android:textSize="18dp"
+        android:text="Carbon Footprint: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
     android:id="@+id/rowid"
@@ -87,7 +121,7 @@ android:padding="6dip" >
     android:layout_alignBaseline="@+id/textView01"
     android:layout_alignBottom="@+id/textView3"
     android:layout_toRightOf="@+id/textView6"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="TextView" />
     <TextView
         android:id="@+id/category"
@@ -96,14 +130,14 @@ android:padding="6dip" >
         android:layout_alignBaseline="@+id/textView1"
         android:layout_alignBottom="@+id/textView3"
         android:layout_toRightOf="@+id/textView6"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:layout_alignBaseline="@+id/textView2"
         android:layout_alignBottom="@+id/textView4"
         android:layout_toRightOf="@+id/textView6"
@@ -115,7 +149,7 @@ android:padding="6dip" >
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_above="@+id/textView3"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:layout_toRightOf="@+id/textView6"
         android:text="TextView" />
 
@@ -123,7 +157,7 @@ android:padding="6dip" >
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
         android:layout_toRightOf="@+id/textView6"
@@ -132,7 +166,7 @@ android:padding="6dip" >
         android:id="@+id/note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:layout_alignBaseline="@+id/textView5"
         android:layout_alignBottom="@+id/textView4"
         android:layout_toRightOf="@+id/textView6"
@@ -141,7 +175,7 @@ android:padding="6dip" >
         android:id="@+id/footprint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:layout_alignBaseline="@+id/textView6"
         android:layout_alignBottom="@+id/textView4"
         android:layout_toRightOf="@+id/textView6"

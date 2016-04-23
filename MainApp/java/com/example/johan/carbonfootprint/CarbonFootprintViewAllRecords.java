@@ -7,7 +7,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -46,10 +51,11 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                 android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
 
-
+        Toolbar myToolbar = (Toolbar)  getActivity().findViewById(R.id.my_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        setHasOptionsMenu(true);
         // Create an array adapter for the list view, using the Ipsum headlines array
         // setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Ipsum.Headlines));
-
 
         dbHelper = new CarbonFootprintDBAdapter(getActivity());
         dbHelper.open();
@@ -58,8 +64,58 @@ public class CarbonFootprintViewAllRecords extends ListFragment {
         displayListView();
 
     }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //super.onCreateOptionsMenu(menu, getActivity().getMenuInflater());
+        inflater.inflate(R.menu.fragment_menu, menu);
+    }
+    /**
+     * changing activities on the toolbar
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        switch (id){
+            case R.id.action_one:
+                go(com.example.hwardak.tipcalculator.MainActivity.class);
+                break;
+            case R.id.action_two:
+                go(com.example.diego.activitytracker.MainActivity.class);
+                break;
+            case R.id.action_three:
+                //go(com.example.johan.carbonfootprint.CarbonFootprintMainActivity.class);
+                break;
+            case R.id.action_four:
+                go(com.example.xuan.contactlist.MainActivity.class);
+                break;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * change activities
+     * @param c
+     */
+    private void go(Class c){
+        Intent intent = new Intent(getActivity(), c);
+        startActivity(intent);
+    }
     /*
      * Sets up a ListView with a SimpleCursorAdapter and a Cursor with all the rows
      * from the database table.  Also sets up the handler for when an item is selected.

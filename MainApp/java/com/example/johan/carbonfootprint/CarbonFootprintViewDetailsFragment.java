@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.tgk.integrationwithfragment.R;
 
+import java.text.NumberFormat;
+
 /**
  * detail fragment for carbon footprint
  * @author Johan Setyobudi
@@ -82,6 +84,8 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         }
     }
 
+
+
     /**
      * getting data from database, and displaying detailed info to user
      * @param position
@@ -93,6 +97,7 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
         Cursor cursor = dbHelper.fetchFootprintByRowID(String.valueOf(position));
         cursor.moveToFirst();
         Log.d("Count", String.valueOf(cursor.getCount()));
+        NumberFormat format = NumberFormat.getInstance();
         if(cursor.getCount() > 0) {
 // get values from cursor here
             String rowid = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_ROWID));
@@ -101,7 +106,17 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
             String distance = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_DISTANCE));
             String date = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_DATE));
             String note = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_NOTE));
-            String footprint = cursor.getString(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_FOOTPRINT));
+            double footprint = cursor.getDouble(cursor.getColumnIndexOrThrow(CarbonFootprintDBAdapter.KEY_FOOTPRINT));
+            double cursor2 = dbHelper.fetchSumFootprintCategory(category);
+            double cursor3 = dbHelper.fetchSumFootprintVehicle(vehicle);
+
+            String sumCategory = String.valueOf(format.format(cursor2));
+            String sumVehicle = String.valueOf(format.format(cursor3));
+            TextView sumCategoryText = (TextView) getActivity().findViewById(R.id.summaryCategoryNumber);
+            sumCategoryText.setText("Total Footprint "+category +" : "+sumCategory +" Tonnes");
+
+            TextView sumVehicleText = (TextView) getActivity().findViewById(R.id.summaryVehicleNumber);
+            sumVehicleText.setText("Total Footprint "+vehicle +" : "+sumVehicle +" Tonnes");
 
             TextView rowidText = (TextView) getActivity().findViewById(R.id.rowid);
             rowidText.setText(rowid);
@@ -113,7 +128,7 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
             vehicleText.setText(vehicle);
 
             TextView distanceText = (TextView) getActivity().findViewById(R.id.distance);
-            distanceText.setText(distance);
+            distanceText.setText(distance +" Km");
 
             TextView dateText = (TextView) getActivity().findViewById(R.id.date);
             dateText.setText(date);
@@ -122,7 +137,7 @@ public class CarbonFootprintViewDetailsFragment extends Fragment implements View
             noteText.setText(note);
 
             TextView footprintText = (TextView) getActivity().findViewById(R.id.footprint);
-            footprintText.setText(footprint);
+            footprintText.setText(format.format(footprint) +" Tonnes");
         }
         mCurrentPosition = position;
 

@@ -173,7 +173,7 @@ public class CarbonFootprintMainActivity extends ActionBarActivity
                     double total;
                     double distanceKm = Double.parseDouble(distance);
 
-                   total = calculateFootprint(categoryChoice, vehicleChoice, distance, distanceTypeChoice, date, note);
+                   total = calculateFootprint(vehicleChoice, distance, distanceTypeChoice);
                     if (distanceTypeChoice.equalsIgnoreCase("miles")) {
                         distanceKm = distanceKm * 1.60;
                     }
@@ -219,15 +219,12 @@ public class CarbonFootprintMainActivity extends ActionBarActivity
 
     /**
      * calculating carbon footprint, and returning the number in tonnes
-     * @param category
      * @param vehicle
      * @param distance
      * @param distanceType
-     * @param date
-     * @param note
      * @return
      */
-    private double calculateFootprint(String category, String vehicle, String distance, String distanceType, String date, String note) {
+    private double calculateFootprint( String vehicle, String distance, String distanceType) {
         Double distanceKm;
         Double vehicleFootprintPerThousandKmPerTonne = 0.0;
         Double total;

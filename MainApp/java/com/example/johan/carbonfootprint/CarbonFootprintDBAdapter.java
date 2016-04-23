@@ -28,7 +28,7 @@ public class CarbonFootprintDBAdapter {
 
     private static final String DATABASE_NAME = "CarbonFootprint";
     private static final String SQLITE_TABLE = "VehicleFootprint";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     private final Context mCtx;
 
@@ -37,10 +37,10 @@ public class CarbonFootprintDBAdapter {
                     KEY_ROWID + " integer PRIMARY KEY autoincrement," +
                     KEY_CATEGORY + "," +
                     KEY_VEHICLE + "," +
-                    KEY_DISTANCE + "," +
+                    KEY_DISTANCE + " real," +
                     KEY_DATE + "," +
                     KEY_NOTE + "," +
-                    KEY_FOOTPRINT +");";
+                    KEY_FOOTPRINT +" real);";
 
     /**
      * database helper class
@@ -123,10 +123,10 @@ public class CarbonFootprintDBAdapter {
 
         initialValues.put(KEY_CATEGORY, category);
         initialValues.put(KEY_VEHICLE, vehicle);
-        initialValues.put(KEY_DISTANCE, distance);
+        initialValues.put(KEY_DISTANCE, Double.parseDouble(distance));
         initialValues.put(KEY_DATE, date);
         initialValues.put(KEY_NOTE, note);
-        initialValues.put(KEY_FOOTPRINT, footprint);
+        initialValues.put(KEY_FOOTPRINT, Double.parseDouble(footprint));
 
         return mDb.insert(SQLITE_TABLE, null, initialValues);
     }
@@ -196,7 +196,52 @@ public class CarbonFootprintDBAdapter {
             mCursor.moveToFirst();
         }
         return mCursor;
+    }
 
+    public Double fetchSumFootprintCategory(String name) {
+        Log.w(TAG, name);
+        Cursor mCursor = null;
+        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE +" where category like '%" +name +"%'",null);
+        mCursor.moveToFirst();
+        double sum = 0;
+
+        if(mCursor.getCount() > 0) {
+            sum = mCursor.getDouble(0);
+        }
+        return sum;
+//
+    }
+
+    public Double fetchSumFootprintVehicle(String name) {
+      //  Cursor cur = db.rawQuery("SELECT SUM(myColumn) FROM myTable", null);
+//        if(cur.moveToFirst())
+//        {
+//            return cur.getInt(0);
+//        }
+        Log.w(TAG, name);
+        Cursor mCursor = null;
+        mCursor = mDb.rawQuery("SELECT SUM(footprint) FROM " +SQLITE_TABLE +" where vehicle like '%" +name +"%'",null);
+//
+//        if (inputText == null || inputText.length() == 0) {
+//            mCursor = mDb.query(SQLITE_TABLE, new String[]{KEY_ROWID,
+//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
+//                    null, null, null, null, null);
+//
+//        }
+//        else {
+//            mCursor = mDb.query(true, SQLITE_TABLE, new String[] {KEY_ROWID,
+//                            KEY_CATEGORY, KEY_VEHICLE, KEY_DISTANCE, KEY_DATE, KEY_NOTE, KEY_FOOTPRINT},
+//                    KEY_ROWID + " like '%" + inputText + "%'", null,
+//                    null, null, null, null);
+//
+//        }
+        mCursor.moveToFirst();
+        double sum = 0;
+
+        if(mCursor.getCount() > 0) {
+            sum = mCursor.getDouble(0);
+        }
+        return sum;
     }
 
     /**
