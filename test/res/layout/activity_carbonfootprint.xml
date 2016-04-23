@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http:/schemas.android.com/app"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:scrollIndicators="right"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <TextView android:text="@string/carbonfootprint" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:padding="20dp"/>
+    <TextView android:text="@string/category" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/categorySpinner"
+        />
+
+    <TextView android:text="@string/vehicle" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vehicleSpinner"
+         />
+    <TextView android:text="@string/distance" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distanceNumber"
+        android:minWidth="200dp"
+        android:inputType="numberDecimal"
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distanceSpinner"
+        />
+    </GridLayout>
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+    <TextView android:text="@string/dateText" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <Button android:id="@+id/myDatePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"/>
+
+    <TextView android:id="@+id/showMyDate"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/dateText"/>
+    </GridLayout>
+
+    <TextView android:text="@string/note" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noteText"
+        />
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:columnCount="3"
+        >
+        <Button android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            />
+        <Button android:id="@+id/viewAllRecords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/viewRecords"
+        />
+        <Button android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            />
+    </GridLayout>
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+    <TextView android:text="Carbon Footprint:" android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+    <TextView android:text="" android:layout_width="wrap_content"
+        android:id="@+id/footprintInTonnes"
+        android:textSize="20sp"
+        android:padding="2dp"
+        android:layout_height="wrap_content"
+        android:hint="0.0 Tonnes"/>
+    </GridLayout>
+</LinearLayout>
+    </ScrollView>
